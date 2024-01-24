@@ -67,7 +67,7 @@
         }
 
         public function verifyPassword(string $password): bool {
-            return password_verify($this->password, $password);
+            return password_verify($password, $this->password);
         }
 
         public function getRoles():array {

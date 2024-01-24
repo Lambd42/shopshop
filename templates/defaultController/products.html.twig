@@ -10,12 +10,19 @@
 
 
 				{% for product in products %}
-				<h3>{{product.name}}</h3> 
-				<i>{{product.type.label}}</i>
-				<br>
-				{{product.price}}€
-				<br> {{product.description}}
-				<br><br>
+					<h3>{{product.id}} {{product.name}}</h3> 
+					<i>{{product.type.label}}</i>
+					<br>
+					{{product.price}}€
+					<br> {{product.description}}
+					<br><br>
+
+					<div class="btn-group" role="group">
+							<a href="index.php?page=updateProduct&id={{product.id}}" class="btn btn-dark" >Modifier</a>
+							<a class="btn btn-dark">Supprimer</a>
+					</div>
+
+
 				{% endfor %}
 
 			</div>

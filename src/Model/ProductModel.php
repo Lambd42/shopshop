@@ -42,7 +42,7 @@
             return null;
             }
             $currentType = new Type($row['TypeId'], $row['label']);
-            return new Product($row['ProductId'], $row['name'], $row['description'], $row['price'], $currentType);
+            return new Product($row['ProductId'], $row['name'], $row['description'], floatval($row['price']), $currentType);
             }
 
     }

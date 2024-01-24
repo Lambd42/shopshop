@@ -126,9 +126,26 @@ class DefaultController
 
     public function updateProduct()
     {
-        $id = filter_input(INPUT_GET, 'productID', FILTER_SANITIZE_NUMBER_INT);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $productID = intval($_POST['productID']);
+            $ancientProduct = $this->productModel->getOneProduct($productID);
+            $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
+            $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
+            $price = $ancientProduct->getPrice();
+            $type = $ancientProduct->getType();
+            $product = new Product($productID, $name, $description, $price, $type);
+            $success = $this->productModel->updateProduct();
+            if ($success) {
+                header('Location: index.php?page=products');
+            }
+        }
+
+        else {
+            $id = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+        }
         $product = $this->productModel->getOneProduct(intVal($id));
         echo $this->twig->render('defaultController/updateProduct.html.twig', ['product' => $product]);
+        
     }
 
     public function register() {
@@ -190,7 +207,7 @@ class DefaultController
             $user = $this->userModel->getUserByEmail($email);
 
             if (!$user) {
-                $_SESSION['message'] = 'Wrong email or password';
+                $_SESSION['message'] = 'Wrong email';
                 header('Location: index.php?page=login');
             }
 
@@ -203,7 +220,7 @@ class DefaultController
                 }
 
                 else {
-                    $_SESSION['message'] = 'Wrong email or password';
+                    $_SESSION['message'] = 'Wrong password';
                     header('Location: index.php?page=login');
                     exit;
                 }

@@ -32,6 +32,7 @@ class Router
             'types' => [DefaultController::class, 'types'],
             'updateType' => [DefaultController::class, 'updateType'],
             'products' => [DefaultController::class, 'products'],
+            'updateProduct' => [DefaultController::class, 'updateProduct'],
             'users' => [DefaultController::class, 'users'],
             'updateUser' => [DefaultController::class, 'updateUser'],
             'addType' => [DefaultController::class, 'addType'],
