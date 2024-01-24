@@ -1,0 +1,54 @@
+{% extends "base.html.twig" %}
+{% block title %}
+    {{ parent() }}
+    Register 
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row justify-content-center"> <div class="col-12 col-md-10">
+        <h1 class="text-center">Create account on SHOPSHOP</h1> 
+        
+        <form method="post" action="">
+
+            <div class="mb-3">
+                <label for="firstName" class="form-label">First name :</label>
+                <input type="text" class="form-control" id="firstName" placeholder="John" name="firstName">
+            </div>
+
+            <div class="mb-3">
+                <label for="lastName" class="form-label">Last name :</label>
+                <input type="text" class="form-control" id="lastName" placeholder="Doe" name="lastName">
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email address :</label>
+                <input type="email" class="form-control" id="email" placeholder="john.doe@mail.net" name="email">
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Password :</label>
+                <input type="password" class="form-control" id="password" name="password" minlength=8>
+            </div>
+
+            <div class="mb-3">
+                <label for="password" class="form-label">Confirm password :</label>
+                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" minlength=8>
+            </div>
+
+            <div style="text-align: center">
+                <input name='button' type="submit" class="btn btn-outline-primary" value='Register'/>
+            </div>
+
+            
+
+        </form>
+
+        <br>
+        <div style="text-align:center">
+            <i style="font-size:10pt"> Already have an account ? <a href="index.php?page=login">click here</a> </i>
+        </div>
+
+    </div>
+</div> 
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    {{ parent() }} 
+    Login 
+{% endblock %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row justify-content-center"> <div class="col-12 col-md-10">
+            <h1 class="text-center">Login</h1>
+            <form method="post" action="">
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email :</label>
+                    <input type="mail" class="form-control" id="email" placeholder="john.doe@mai.net" name="email">
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password :</label>
+                    <input type="password" class="form-control" id="password" name="password">
+                </div>
+
+                <div style="text-align: center">
+                    <input name='button' type="submit" class="btn btn-outline-primary" value='Login'/>
+                </div>
+            </form>
+
+            <br>
+            <div style="text-align:center">
+                <i style="font-size:10pt">New on our website ? <a href="index.php?page=register"> create account </a> </i>
+            </div>
+
+        </div>
+    </div> 
+{% endblock %}

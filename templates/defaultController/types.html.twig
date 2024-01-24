@@ -1,0 +1,24 @@
+{% extends "base.html.twig" %}
+
+{% block title %} {{ parent() }} Types {% endblock %}
+       
+{% block content %} 
+    <div class="container-fluid">
+		<div class="row justify-content-center">
+			<div class="col-12 col-md-10">
+				 <h1 class="text-center">Types TMTC</h1> 
+
+
+				{% for type in types %}
+				{{type.typeID}} {{type.label}}
+				<br>
+				<a href="index.php?page=updateType&id={{type.typeID}}">
+				<button type="button" class="btn btn-dark">Modifier</button>
+				</a>
+				<br><br>
+				{% endfor %}
+
+			</div>
+		</div>
+	</div>
+{% endblock %} 
