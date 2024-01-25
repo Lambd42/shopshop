@@ -56,8 +56,8 @@
 		</nav>
 
 		{% if session.message %}
-		<div class="alert alert-danger text-center">{{ session.message}}</div>
-		{{ clear_session_message() }} 
+			<div class="alert alert-danger text-center">{{ session.message}}</div>
+			{{ clear_session_message() }} 
 		{% endif %}
 
 		{% block content %}
