@@ -14,5 +14,11 @@
 
 			</div>
 		</div>
+		<div class="col-3 p-3 mb-2">
+  			{% for type in types %}
+				<a href="index.php?page=productsByType&typeID={{type.typeId}}">{{type.label}}</a>
+				<br>
+			{% endfor %}
+		</div>
 	</div>
 {% endblock %} 

@@ -30,14 +30,6 @@
 					<li class="nav-item">
 					<a class="nav-link" href="index.php?page=contact">Contact</a>
 					</li>
-					<li class="nav-item">
-					<a class="nav-link" href="index.php?page=addType">Add Type</a>
-					</li>
-					<li class="nav-item">
-					<a class="nav-link" href="index.php?page=login">Login</a>
-					</li><li class="nav-item">
-					<a class="nav-link" href="index.php?page=register">Register</a>
-					</li>
 					<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Pages</a>
 					<div class="dropdown-menu">
@@ -46,11 +38,25 @@
 						<a class="dropdown-item" href="index.php?page=products">Products</a>
 						<a class="dropdown-item" href="index.php?page=users">Users</a>
 						<a class="dropdown-item" href="index.php?page=register">Register</a>
+						<a class="dropdown-item" href="index.php?page=carts">carts list</a>
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="index.php?page=home">Home</a>
 					</div>
 					</li>
 				</ul>
+
+					{% if session.login is defined %}
+						<div class="nav-item">{{session.login}}</div>
+						&nbsp;&nbsp;&nbsp;
+						<div class="nav-item"><a href="index.php?page=logout" class="btn btn-outline-danger">LOGOUT</a></div>
+					{% else %}
+						<div class="nav-item"><a href="index.php?page=register" class="btn btn-outline-success">REGISTER</a></div>
+						&nbsp;&nbsp;&nbsp;
+						<div class="nav-item"><a href="index.php?page=login" class="btn btn-outline-info">LOGIN</a></div>
+					{% endif %}
+					
+										
+				
 				</div>
 			</div>
 		</nav>

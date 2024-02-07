@@ -1,0 +1,24 @@
+{% extends "base.html.twig" %}
+
+{% block title %} {{ parent() }}{{type.label}} | Products {% endblock %}
+       
+{% block content %} 
+    <div class="container-fluid">
+		<div class="row justify-content-center">
+			<div class="col-12 col-md-10">
+				 <h1 class="text-center">{{type.label}}</h1> 
+
+
+				{% for product in products %}
+					<h3>{{product.id}} {{product.name}}</h3> 
+					<i>{{product.type.label}}</i>
+					<br>
+					{{product.price}}€
+					<br> {{product.description}}
+					<br><br>
+				{% endfor %}
+
+			</div>
+		</div>
+	</div>
+{% endblock %} 

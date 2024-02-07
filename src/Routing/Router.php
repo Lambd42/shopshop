@@ -43,7 +43,9 @@ class Router
             'carts' => [DefaultController::class, 'carts', []],
             'addCart' => [DefaultController::class, 'addCart', []],
             'deleteCart' => [DefaultController::class, 'deleteCart', []],
-            'updateCart' => [DefaultController::class, 'updateCart', []]
+            'updateCart' => [DefaultController::class, 'updateCart', []],
+            'logout' => [DefaultController::class, 'logout', []],
+            'productsByType' => [DefaultController::class, 'productsByType', []]
             
         ];
         $this->defaultPage = 'home';

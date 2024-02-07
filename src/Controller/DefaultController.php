@@ -32,7 +32,8 @@ class DefaultController
 
     public function home()
     {
-        echo $this->twig->render('defaultController/home.html.twig', []);
+        $types = $this->typeModel->getAllTypes();
+        echo $this->twig->render('defaultController/home.html.twig', ["types" => $types]);
     }
 
     public function error404()
@@ -65,6 +66,14 @@ class DefaultController
     {
         $products = $this->productModel->getAllProducts();
         echo $this->twig->render('defaultController/products.html.twig', ['products' => $products]);
+    }
+
+    public function productsByType() {
+        $typeId = filter_input(INPUT_GET, "typeID", FILTER_SANITIZE_NUMBER_INT);
+        $type = $this->typeModel->getOneType(intval($typeId));
+        $products = $this->productModel->getAllProductsByType($type);
+        var_dump($products);
+        echo $this->twig->render('defaultController/productsByType.html.twig', ['products' => $products, 'type' => $type]);
     }
 
     public function users()
@@ -270,5 +279,11 @@ class DefaultController
         }
         echo $this->twig->render('defaultController/login.html.twig', []);
     }
+
+    public function logout() {
+        $_SESSION = array(); session_destroy(); 
+        header('Location: index.php'); 
+        exit;
+        }
 
 }

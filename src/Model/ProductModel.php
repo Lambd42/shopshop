@@ -39,7 +39,7 @@
             $stmt->execute();
             $row = $stmt->fetch(PDO::FETCH_ASSOC);
             if(!$row){
-            return null;
+                return null;
             }
             $currentType = new Type($row['TypeId'], $row['label']);
             return new Product($row['ProductId'], $row['name'], $row['description'], floatval($row['price']), $currentType);
@@ -54,6 +54,20 @@
             $stmt->bindValue(":typeID", $product->getType()->getTypeId());
             $stmt->bindValue(":productID", $product->getId());
             return $stmt->execute();
+        }
+
+        public function getAllProductsByType(Type $type): ?array {
+            $sql = "SELECT * FROM Product WHERE type = :typeID;";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue(":typeID", $type->getTypeId());
+            $products = [];
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $products[] = new Product($row['ProductId'], $row['name'], $row['description'], floatval($row['price']), $type);
+            }
+
+            return $products;
+            
+            
         }
 
     }
