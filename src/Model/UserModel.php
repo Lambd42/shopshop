@@ -25,7 +25,19 @@
                 $users[] = new User($row['userID'], $row['email'], $row['lastName'], $row['firstName'], $row['password'], json_decode($row['roles'])); 
             }
 
+            return $users;
+        }
 
+        public function getAllClients(): array {
+            $sql = "SELECT * FROM User;";
+            $stmt = $this->db->query($sql);
+            $users = [];
+
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                if (!in_array('admin', json_decode($row['roles']))) {
+                    $users[] = new User($row['userID'], $row['email'], $row['lastName'], $row['firstName'], $row['password'], json_decode($row['roles'])); 
+                }
+            }
 
             return $users;
         }

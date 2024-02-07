@@ -5,6 +5,8 @@
     namespace MyApp\Model;
 
     use MyApp\Entity\Cart; 
+    use MyApp\Entity\User;
+    use MyApp\Model\UserModel;
     use PDO;
 
     class CartModel {
@@ -20,7 +22,7 @@
             $carts = [];
 
             while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $user = new User($row['userID'],$row['email'],$row['firstName'],$row['lastName'],$row['password'],$row['roles']);
+                $user = new User($row['userID'],$row['email'],$row['firstName'],$row['lastName'],$row['password'],json_decode($row['roles']));
                 $carts[] = new Cart($row['cartID'], $row['creationDate'], $row['status'], $user);
             }
             return $carts;
@@ -35,7 +37,7 @@
             if (!$row) {
                 return null;
             }
-            $user = new User($row['userID'],$row['email'],$row['firstName'],$row['lastName'],$row['password'],$row['roles']);
+            $user = new User($row['userID'],$row['email'],$row['firstName'],$row['lastName'],$row['password'],json_decode($row['roles']));
             return new Cart($row['cartID'], $row['creationDate'], $row['status'], $user);
         }
 
@@ -44,9 +46,16 @@
             $stmt = $this->db->prepare($sql);
             $stmt->bindValue(":creationDate", $cart->getCreationDate());
             $stmt->bindValue(":status", $cart->getStatus());
-            $stmt->bindValue(":userID", $cart->getUser()->getID());
+            $stmt->bindValue(":userID", $cart->getUser()->getUserId());
             return $stmt->execute();
 
+        }
+
+        public function deleteCart(Cart $cart): ?bool {
+            $sql = "DELETE FROM Cart WHERE cartID = :cartID;";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue(":cartID", $cart->getId());
+            return $stmt->execute();
         }
     }
 

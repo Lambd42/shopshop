@@ -78,6 +78,33 @@ class DefaultController
         echo $this->twig->render('defaultController/carts.html.twig', ['carts' => $carts]);
     }
 
+    public function addCart() {
+        if ($_SERVER["REQUEST_METHOD"] == 'POST') {
+            $creationDate = date("Y-m-d");
+            $email = filter_input(INPUT_POST, "user", FILTER_VALIDATE_EMAIL);
+            $user = $this->userModel->getUserByEmail($email);
+            $cart = new Cart(null, $creationDate, '', $user);
+            $result = $this->cartModel->createCart($cart);
+            if ($result) {
+                header('Location: index.php?page=carts');
+            }
+        }
+        $clients = $this->userModel->getAllClients();
+        echo $this->twig->render('defaultController/addCart.html.twig', ['users' => $clients]);
+    }
+
+    public function deleteCart() {
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            $cartId = filter_input(INPUT_GET, 'id', FILTER_SANITIZE_NUMBER_INT);
+            $cart = $this->cartModel->getOneCart($cartId);
+            $result = $this->cartModel->deleteCart($cart);
+            if ($result) {
+                header('Location: index.php?page=carts');
+            }
+
+        }
+    }
+
     public function updateType()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

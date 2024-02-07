@@ -25,24 +25,25 @@ class Router
         // Colonne 2 : nom de la méthode à appeler
 
         $this->pageMappings = [
-            'home' => [DefaultController::class, 'home'],
-            '404' => [DefaultController::class, 'error404'],
-            '500' => [DefaultController::class, 'error500'],
-            '403' => [DefaultController::class, 'error403'],
-            'contact' => [DefaultController::class, 'contact'],
-            'types' => [DefaultController::class, 'types'],
-            'updateType' => [DefaultController::class, 'updateType'],
-            'products' => [DefaultController::class, 'products'],
-            'updateProduct' => [DefaultController::class, 'updateProduct'],
-            'users' => [DefaultController::class, 'users'],
-            'updateUser' => [DefaultController::class, 'updateUser'],
-            'addType' => [DefaultController::class, 'addType'],
-            'deleteUser' => [DefaultController::class, 'deleteUser'],
-            'register' => [DefaultController::class, 'register'],
-            'login' => [DefaultController::class, 'login'],
-            'carts' => [DefaultController::class, 'carts'],
-            'deleteCart' => [DefaultController::class, 'deleteCart'],
-            'updateCart' => [DefaultController::class, 'updateCart']
+            'home' => [DefaultController::class, 'home', []],
+            '404' => [DefaultController::class, 'error404', []],
+            '500' => [DefaultController::class, 'error500', []],
+            '403' => [DefaultController::class, 'error403', []],
+            'contact' => [DefaultController::class, 'contact', []],
+            'types' => [DefaultController::class, 'types', []],
+            'updateType' => [DefaultController::class, 'updateType', []],
+            'products' => [DefaultController::class, 'products', []],
+            'updateProduct' => [DefaultController::class, 'updateProduct', []],
+            'users' => [DefaultController::class, 'users', []],
+            'updateUser' => [DefaultController::class, 'updateUser', []],
+            'addType' => [DefaultController::class, 'addType', []],
+            'deleteUser' => [DefaultController::class, 'deleteUser', []],
+            'register' => [DefaultController::class, 'register', []],
+            'login' => [DefaultController::class, 'login', []],
+            'carts' => [DefaultController::class, 'carts', []],
+            'addCart' => [DefaultController::class, 'addCart', []],
+            'deleteCart' => [DefaultController::class, 'deleteCart', []],
+            'updateCart' => [DefaultController::class, 'updateCart', []]
             
         ];
         $this->defaultPage = 'home';
@@ -74,10 +75,9 @@ class Router
             // Vérification de l'existence de la classe et de la méthode du contrôleur à appeler if (class_exists($controllerClass) && method_exists($controllerClass, $method)) {
             if (class_exists($controllerClass) && method_exists($controllerClass, $method)) {
                 // Instancie la classe récupérée
-                $controller = new $controllerClass($twig, $this->dependencyContainer); //la fonction call_user_func appelle une méthode sur un objet call_user_func([$controller, $method]);
-                    
-            // Instancie la classe récupérée
-            $controller = new $controllerClass($twig, $this->dependencyContainer); //la fonction call_user_func appelle une méthode sur un objet call_user_func([$controller, $method]);
+                $controller = new $controllerClass($twig, $this->dependencyContainer); //la fonction call_user_func appelle une méthode sur un objet 
+                call_user_func([$controller, $method]);
+                
             } else {
                 // Si la classe ou la méthode n'existe pas, utilisez le contrôleur d'erreur 500
                 $this->handleError($twig, '500'); 
@@ -87,4 +87,30 @@ class Router
         $this->handleError($twig, '403');
         }
     }
+
+    private function checkUserPermissions(array $requiredRoles): bool {
+        if(!empty($requiredRoles)){ 
+            if(isset($_SESSION['roles'])){
+                $i = array_intersect($_SESSION['roles'], $requiredRoles); 
+                if(empty($i)){
+                    return false; 
+                }
+                else{
+                    return true;
+                } 
+            }
+            else{
+                return false;
+            } 
+        }
+        else{
+            return true;
+        } 
+    }
+
+        private function handleError($twig, $errorCode) {
+            $errorInfo = $this->pageMappings[$errorCode];
+            [$errorControllerClass, $errorMethod] = $errorInfo;
+            $errorController = new $errorControllerClass($twig, $this->dependencyContainer); call_user_func([$errorController, $errorMethod]);
+        }
 }

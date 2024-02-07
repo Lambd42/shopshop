@@ -22,7 +22,7 @@
         }
 
         public function getId() :?int {
-            return this->cartID;
+            return $this->cartID;
         }
 
         public function setId($cartID) :void {
@@ -30,7 +30,7 @@
         }
 
         public function getCreationDate() :?string {
-            return this->creationDate;
+            return $this->creationDate;
         }
 
         public function setCreationDate($creationDate) :void {
@@ -38,7 +38,7 @@
         }
 
         public function getStatus() :?string {
-            return this->status;
+            return $this->status;
         }
 
         public function setStatus($status) :void {
@@ -46,7 +46,7 @@
         }
 
         public function getUser() :?User {
-            return this->user;
+            return $this->user;
         }
 
         public function setUser($user) :void {
