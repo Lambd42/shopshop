@@ -15,7 +15,7 @@
         private array $roles;
 
         public function __construct(?int $userID, string $email, string $firstName, string $lastName, string $password, array $roles) { // constructeur de l'objet 
-            $this->userID = $userID; // on atribue la valeur de $id à l'attibut 'id'
+            $this->userID = $userID; // on atribue la valeur de $userID à l'attibut 'userID'
             $this->email = $email; // $this fait référence à l'instance en cours
             $this->firstName = $firstName;
             $this->lastName = $lastName;

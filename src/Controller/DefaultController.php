@@ -134,7 +134,7 @@ class DefaultController
             $price = $ancientProduct->getPrice();
             $type = $ancientProduct->getType();
             $product = new Product($productID, $name, $description, $price, $type);
-            $success = $this->productModel->updateProduct();
+            $success = $this->productModel->updateProduct($product);
             if ($success) {
                 header('Location: index.php?page=products');
             }

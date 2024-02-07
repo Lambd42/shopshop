@@ -45,6 +45,17 @@
             return new Product($row['ProductId'], $row['name'], $row['description'], floatval($row['price']), $currentType);
             }
 
+        public function updateProduct(Product $product): bool {
+            $sql = "UPDATE Product SET name = :name, description = :description, price = :price, type = :typeId WHERE productID = :productID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue(":name", $product->getName());
+            $stmt->bindValue(":description", $product->getDescription());
+            $stmt->bindValue(":price", $product->getPrice());
+            $stmt->bindValue(":typeID", $product->getType()->getTypeId());
+            $stmt->bindValue(":productID", $product->getId());
+            return $stmt->execute();
+        }
+
     }
 
 
