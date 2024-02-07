@@ -28,6 +28,7 @@ class Router
             'home' => [DefaultController::class, 'home'],
             '404' => [DefaultController::class, 'error404'],
             '500' => [DefaultController::class, 'error500'],
+            '403' => [DefaultController::class, 'error403'],
             'contact' => [DefaultController::class, 'contact'],
             'types' => [DefaultController::class, 'types'],
             'updateType' => [DefaultController::class, 'updateType'],
@@ -38,7 +39,10 @@ class Router
             'addType' => [DefaultController::class, 'addType'],
             'deleteUser' => [DefaultController::class, 'deleteUser'],
             'register' => [DefaultController::class, 'register'],
-            'login' => [DefaultController::class, 'login']
+            'login' => [DefaultController::class, 'login'],
+            'carts' => [DefaultController::class, 'carts'],
+            'deleteCart' => [DefaultController::class, 'deleteCart'],
+            'updateCart' => [DefaultController::class, 'updateCart']
             
         ];
         $this->defaultPage = 'home';
@@ -63,20 +67,24 @@ class Router
         $controllerInfo = $this->pageMappings[$requestedPage];
         /* Destructuration du tableau en mettant la première valeur du tableau de la ligne dans $controllerClass et la deuxième
         valeur dans $method */
-        [$controllerClass, $method] = $controllerInfo;
+        [$controllerClass, $method, $requiredRoles] = $controllerInfo;
 
         // Vérification de l'existence de la classe et de la méthode du contrôleur a appeler
-        if (class_exists($controllerClass) && method_exists($controllerClass, $method)) {
+        if ($this->checkUserPermissions($requiredRoles)) {
+            // Vérification de l'existence de la classe et de la méthode du contrôleur à appeler if (class_exists($controllerClass) && method_exists($controllerClass, $method)) {
+            if (class_exists($controllerClass) && method_exists($controllerClass, $method)) {
+                // Instancie la classe récupérée
+                $controller = new $controllerClass($twig, $this->dependencyContainer); //la fonction call_user_func appelle une méthode sur un objet call_user_func([$controller, $method]);
+                    
             // Instancie la classe récupérée
-            $controller = new $controllerClass($twig, $this->dependencyContainer);
-            //la fonction call_user_func appelle une méthode sur un objet
-            call_user_func([$controller, $method]);
-        } else {
-            // Si la classe ou la méthode n'existe pas, utilisez le contrôleur d'erreur 500
-            $error500Info = $this->pageMappings['500'];
-            [$errorControllerClass, $errorMethod] = $error500Info;
-            $errorController = new $errorControllerClass($twig, $this->dependencyContainer);
-            call_user_func([$errorController, $errorMethod]);
+            $controller = new $controllerClass($twig, $this->dependencyContainer); //la fonction call_user_func appelle une méthode sur un objet call_user_func([$controller, $method]);
+            } else {
+                // Si la classe ou la méthode n'existe pas, utilisez le contrôleur d'erreur 500
+                $this->handleError($twig, '500'); 
+            }
+        }
+        else {
+        $this->handleError($twig, '403');
         }
     }
 }

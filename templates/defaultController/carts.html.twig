@@ -1,0 +1,32 @@
+{% extends "base.html.twig" %}
+
+{% block title %} {{ parent() }} Carts {% endblock %}
+       
+{% block content %} 
+    <div class="container-fluid">
+		<div class="row justify-content-center">
+			<div class="col-12 col-md-10">
+				 <h1 class="text-center">Carts list</h1> 
+
+
+				{% for cart in carts %}
+					<h3>Panier de {{cart.user.firstName}} {{cart.user.lastName}}</h3> 
+					id : {{cart.cartID}}
+					<br>
+					date de création : {{cart.creationDate}}
+					<br> 
+					statut : {{cart.status}}
+					<br><br>
+
+					<div class="btn-group" role="group">
+							<a href="index.php?page=updateCart&id={{cart.cartID}}" class="btn btn-dark" >Modifier</a>
+							<a href="index.php?page=deleteCart&id={{cart.cartID}}" class="btn btn-dark">Supprimer</a>
+					</div>
+
+
+				{% endfor %}
+
+			</div>
+		</div>
+	</div>
+{% endblock %} 

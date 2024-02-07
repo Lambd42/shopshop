@@ -4,9 +4,12 @@ namespace MyApp\Controller;
 
 use MyApp\Entity\Type;
 use MyApp\Entity\User;
+use MyApp\Entity\Product;
+use MyApp\Entity\Cart;
 use MyApp\Model\ProductModel;
 use MyApp\Model\TypeModel;
 use MyApp\Model\UserModel;
+use MyApp\Model\CartModel;
 use MyApp\Service\DependencyContainer;
 use Twig\Environment;
 
@@ -16,6 +19,7 @@ class DefaultController
     private $typeModel;
     private $productModel;
     private $userModel;
+    private $cartModel;
 
     public function __construct(Environment $twig, DependencyContainer $dependencyContainer)
     {
@@ -23,6 +27,7 @@ class DefaultController
         $this->typeModel = $dependencyContainer->get('TypeModel');
         $this->productModel = $dependencyContainer->get('ProductModel');
         $this->userModel = $dependencyContainer->get('UserModel');
+        $this->cartModel = $dependencyContainer->get('CartModel');
     }
 
     public function home()
@@ -33,6 +38,11 @@ class DefaultController
     public function error404()
     {
         echo $this->twig->render('defaultController/error404.html.twig', []);
+    }
+
+    public function error403()
+    {
+        echo $this->twig->render('defaultController/error403.html.twig', []);
     }
 
     public function error500()
@@ -61,6 +71,11 @@ class DefaultController
     {
         $users = $this->userModel->getAllUsers();
         echo $this->twig->render('defaultController/users.html.twig', ['users' => $users]);
+    }
+
+    public function carts() {
+        $carts = $this->cartModel->getAllCarts();
+        echo $this->twig->render('defaultController/carts.html.twig', ['carts' => $carts]);
     }
 
     public function updateType()
