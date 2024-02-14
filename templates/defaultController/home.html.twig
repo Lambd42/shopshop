@@ -14,11 +14,41 @@
 
 			</div>
 		</div>
-		<div class="col-3 p-3 mb-2">
-  			{% for type in types %}
-				<a href="index.php?page=productsByType&typeID={{type.typeId}}">{{type.label}}</a>
-				<br>
-			{% endfor %}
+
+		<div class="container text-center">
+		<div class="row justify-content-start">
+
+			<div class="col-2">
+				{% for type in types %}
+					<a href="index.php?page=productsByType&typeID={{type.typeId}}">{{type.label}}</a>
+					<br>
+				{% endfor %}
+			</div>
+
+
+			<div class="col">
+
+				<div class="container text-center">
+				<div class="row row-cols-4">
+					{% for product in products %}
+						<div class="col" style="border: 2px solid 
+							{% if product.stock < 3 %} red
+							{% else %} white
+							{% endif %}
+							; border-radius:5px; margin: 5px;"
+						>
+							<h3>{{product.name}}</h3> 
+							<i>{{product.type.label}}</i>
+							<br>
+							{{product.price}}€
+							<br> {{product.description|raw}}
+							<br><br>
+						</div>
+					{% endfor %}
+				</div>
+				</div>
+			</div>
+		</div>
 		</div>
 	</div>
 {% endblock %} 

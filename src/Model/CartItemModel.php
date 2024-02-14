@@ -27,7 +27,7 @@
                 $user = new User($row['User.userID'],$row['email'],$row['firstName'],$row['lastName'],$row['password'],json_decode($row['roles']));
                 $cart = new Cart($row['Cart.cartID'], $row['creationDate'], $row['status'], $user);
                 $type = new Type($row['Type.typeId'], $row['label']);
-                $product = new Product($row['Product.productId'], $row['name'], $row['description'], floatVal($row['price']), $type); 
+                $product = new Product($row['Product.productId'], $row['name'], $row['description'], floatVal($row['price']), $type, $row['image']); 
                 $cartItems[] = new CartItem($product, $cart, $row['quantity'], $row['unitPrice']);
             }
 
@@ -47,7 +47,7 @@
             $user = new User($row['User.userID'],$row['email'],$row['firstName'],$row['lastName'],$row['password'],json_decode($row['roles']));
             $cart = new Cart($row['Cart.cartID'], $row['creationDate'], $row['status'], $user);
             $type = new Type($row['Type.typeId'], $row['label']);
-            $product = new Product($row['Product.productId'], $row['name'], $row['description'], floatVal($row['price']), $type);
+            $product = new Product($row['Product.productId'], $row['name'], $row['description'], floatVal($row['price']), $type, $row['image']);
             $cartItem = new CartItem($product, $cart, $row['quantity'], $row['unitPrice']);
 
         }

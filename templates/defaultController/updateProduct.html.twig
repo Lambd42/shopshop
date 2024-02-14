@@ -10,11 +10,21 @@
 
 				<form method="POST">
 
-					<input type="hidden" value="{{product.productID}}" name="productID" class="form-control">
+					<input type="hidden" value="{{product.id}}" name="productID" class="form-control">
 
 					<input type="text" value="{{product.name}}" name="name" placeholder="Product Name" class="form-control">
 					<br>
-					<input type="text" value="{{product.description}}" name="description" placeholder="Product description" class="form-control">
+					<input type="text" value="{{product.description|raw}}" name="description" placeholder="Product description" class="form-control">
+					<br>
+					<input type="text" value="{{product.stock}}" name="stock" placeholder="stock" class="form-control">
+					<br>
+					<input type="text" value="{{product.image}}" name="image" placeholder="image name" class="form-control">
+					<br>
+					<label for="homepage">Show on homepage :</label>
+					<select class="form-select" name="homepage" id="homepage">
+						<option value="false">no</option>
+						<option value="true">yes</option>
+					</select>
 					<br>
 					<div class="text-center">
 						<input type="submit" value="Modifier" class="btn btn-dark m-2">

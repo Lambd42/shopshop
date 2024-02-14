@@ -13,7 +13,7 @@
 
             <div class="mb-3">
                 <label for="user" class="form-label">User :</label>
-                <select type="text" class="form-select" id="user" name="user" required>
+                <select class="form-select" id="user" name="user" required>
                 <option selected value="">-- select an email --</option>
                 {% for user in users %}
                     <option value="{{user.email}}">

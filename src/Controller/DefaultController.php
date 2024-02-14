@@ -32,8 +32,9 @@ class DefaultController
 
     public function home()
     {
+        $products = $this->productModel->getAllHomepageProducts();
         $types = $this->typeModel->getAllTypes();
-        echo $this->twig->render('defaultController/home.html.twig', ["types" => $types]);
+        echo $this->twig->render('defaultController/home.html.twig', ["types" => $types, "products" => $products]);
     }
 
     public function error404()
@@ -72,7 +73,6 @@ class DefaultController
         $typeId = filter_input(INPUT_GET, "typeID", FILTER_SANITIZE_NUMBER_INT);
         $type = $this->typeModel->getOneType(intval($typeId));
         $products = $this->productModel->getAllProductsByType($type);
-        var_dump($products);
         echo $this->twig->render('defaultController/productsByType.html.twig', ['products' => $products, 'type' => $type]);
     }
 
@@ -183,8 +183,11 @@ class DefaultController
             $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_STRING);
             $description = filter_input(INPUT_POST, 'description', FILTER_SANITIZE_STRING);
             $price = $ancientProduct->getPrice();
+            $stock = filter_input(INPUT_POST, 'stock', FILTER_SANITIZE_NUMBER_INT);
             $type = $ancientProduct->getType();
-            $product = new Product($productID, $name, $description, $price, $type);
+            $image = filter_input(INPUT_POST, 'image', FILTER_SANITIZE_STRING);
+            $homepage = filter_input(INPUT_POST, "homepage", FILTER_VALIDATE_BOOLEAN);
+            $product = new Product($productID, $name, $description, $price, intval($stock), $type, $image, $homepage);
             $success = $this->productModel->updateProduct($product);
             if ($success) {
                 header('Location: index.php?page=products');
