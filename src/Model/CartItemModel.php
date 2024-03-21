@@ -62,7 +62,7 @@
                 $user = new User($row['UserId'],$row['email'],$row['firstname'],$row['lastname'],$row['password'],json_decode($row['roles']));
                 $cart = new Cart($row['CartId'], $row['creationDate'], $row['status'], $user);
                 $type = new Type($row['TypeId'], $row['label']);
-                $product = new Product($row['ProductId'], $row['name'], $row['description'], floatVal($row['price']), $row['stock'], $type, $row['image']); 
+                $product = new Product($row['ProductId'], $row['name'], $row['description'], floatVal($row['price']), $row['stock'], $type, $row['image'], boolval($row['homepage'])); 
                 $cartItems[] = new CartItem($product, $cart, $row['quantity']);
             }
 
