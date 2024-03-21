@@ -98,6 +98,37 @@ class DefaultController
         echo $this->twig->render('defaultController/carts.html.twig', ['carts' => $carts]);
     }
 
+    public function myCart() {
+        $email = $_SESSION['login'];
+        $user = $this->userModel->getUserByEmail($email);
+        $cart = $this->cartModel->getCartByUser($user);
+        $cartItems = $this->CartItemModel->getCartitemsByCart($cart);
+        echo $this->twig->render('defaultController/myCart.html.twig', ['items' => $cartItems]);
+    }
+
+    public function addToCartClient() {
+        $email = $_SESSION['login'];
+        $user = $this->UserModel->getUserByEmail($email);
+        if ($this->cartModel->getCartByUser($user) === null) { // si l'utilisateur n'a pas encore de panier actif, on lui en crée un
+            $creationDate = date("Y-m-d");
+            $cart = new Cart(null, $creationDate, '', $user);
+            $this->cartModel->createCart($cart);
+        }
+    }
+
+    public function pay() {
+        $email = $_SESSION['login'];
+        $user = $this->UserModel->getUserByEmail($email);
+        $order = new order(null, date("Y-m-d"), '', $user);
+        $this->orderModel->createOrder($order);
+        $cart = $this->cartModel->getCartByUser($user);
+        $cartItems = $this->cartItemModel->getCartItemsByCart($cart);
+        foreach($cartItems as $item) {
+            $item->deleteItem
+        }
+
+    }
+
     public function addCart() {
         if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             $creationDate = date("Y-m-d");

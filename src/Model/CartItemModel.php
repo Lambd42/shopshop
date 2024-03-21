@@ -51,6 +51,24 @@
             return $cartItem;
         }
 
+        public function getCartItemsByCart(Cart $cart): array { 
+            $sql = "SELECT * FROM Contenir INNER JOIN Product ON Contenir.productID = Product.productID INNER JOIN Cart ON Contenir.cartID = Cart.cartID INNER JOIN User ON Cart.userID = User.userID INNER JOIN Type ON Product.typeID = Type.typeID WHERE Cart.cartID = :cartId;";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue(":cartId", $cart.getId());
+            $stmt->execute();
+            $cartItems = [];
+
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $user = new User($row['User.userID'],$row['email'],$row['firstName'],$row['lastName'],$row['password'],json_decode($row['roles']));
+                $cart = new Cart($row['Cart.cartID'], $row['creationDate'], $row['status'], $user);
+                $type = new Type($row['Type.typeId'], $row['label']);
+                $product = new Product($row['Product.productId'], $row['name'], $row['description'], floatVal($row['price']), $type, $row['image']); 
+                $cartItems[] = new CartItem($product, $cart, $row['quantity']);
+            }
+
+            return $cartItems;
+        }
+
         public function createCartItem(CartItem $cartItem): ?bool {
             $sql = "INSERT INTO Contenir (productID, cartID, quantity, unitPrice) VALUES (:productID, :cartID, :quantity, :unitPrice);";
             $stmt = $this->db->prepare($sql);
@@ -60,4 +78,13 @@
             $stmt->bindValue(":unitPrice", $cartItem->getUnitPrice());
             return $stmt->execute();
         }
+
+        public function deleteCartItem(CartItem $cartItem): ?bool {
+            $sql = "DELETE FROM Contenir WHERE productID = :productID AND cartID = :cartID;";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue(":productID", $cartItem->getProduct()->getId());
+            $stmt->bindValue(":cartID", $cartItem->getCart()->getID());
+            return $stmt->execute();
+        }
+        
     }
