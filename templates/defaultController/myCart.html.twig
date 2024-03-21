@@ -11,9 +11,11 @@
 
 				{% for item in items %}
 					<h3>{{item.product.name}}</h3> 
-					<i>{{item.quatity}}</i>
+					<i>{{item.quantity}}x</i>
 					<br>
-					{{product.price}}€
+					unit price : {{item.unitPrice}}€
+					<br>
+					total : {{item.unitPrice * item.quantity}}€
 					<br> {{product.description|raw}}
 					<br><br>
 

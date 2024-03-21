@@ -171,6 +171,8 @@ class DefaultController
         foreach($cartItems as $item) {
             $this->cartItemModel->deleteCartItem($item);
         }
+        $_SESSION['message'] = "commande passée";
+        echo $this->twig->render('defaultController/myOrders.html.twig', []);
 
     }
 
