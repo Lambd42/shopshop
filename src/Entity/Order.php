@@ -12,7 +12,6 @@
         private $orderDate;
         private $status;
         private User $user;
-        private int $invoiceID;
 
         public function __construct(?int $orderID, $orderDate, $status, User $user) {
             $this->orderID = $orderID;

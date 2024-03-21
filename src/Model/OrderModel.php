@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace MyApp\Model;
 
 use MyApp\Entity\Order;
-use MyApp\Entity\Invoice; 
 use PDO;
 
 class OrderModel {
