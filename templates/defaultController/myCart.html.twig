@@ -1,0 +1,31 @@
+{% extends "base.html.twig" %}
+
+{% block title %} {{ parent() }} Products {% endblock %}
+       
+{% block content %} 
+    <div class="container-fluid">
+		<div class="row justify-content-center">
+			<div class="col-12 col-md-10">
+				 <h1 class="text-center">Products list</h1> 
+
+
+				{% for item in items %}
+					<h3>{{item.product.name}}</h3> 
+					<i>{{item.quatity}}</i>
+					<br>
+					{{product.price}}€
+					<br> {{product.description|raw}}
+					<br><br>
+
+					<div class="btn-group" role="group">
+							<a class="btn btn-dark">Supprimer</a>
+					</div>
+
+
+				{% endfor %}
+				<div><a class="btn btn-outline-success" href="index.php?page=pay">PAYER</a></div>
+
+			</div>
+		</div>
+	</div>
+{% endblock %} 

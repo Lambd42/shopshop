@@ -19,6 +19,12 @@
         <br><br>
         <a class="btn btn-dark" href="index.php?page=createReview&productID={{product.id}}">add review</a>
 
+        <form method=POST action="index.php?">
+            <input type="number" name="quantity" value="1" min="1" max="5"/>
+            <input name="productID" value="{{product.id}}" style="display:none;"/>
+            
+        </form>
+
     </div>
     </div>
     <hr>

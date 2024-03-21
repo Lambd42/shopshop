@@ -107,14 +107,45 @@ class DefaultController
     }
 
     public function addToCartClient() {
-        $email = $_SESSION['login'];
-        $user = $this->UserModel->getUserByEmail($email);
-        if ($this->cartModel->getCartByUser($user) === null) { // si l'utilisateur n'a pas encore de panier actif, on lui en crée un
-            $creationDate = date("Y-m-d");
-            $cart = new Cart(null, $creationDate, '', $user);
-            $this->cartModel->createCart($cart);
+
+        if (isset($_SESSION['login'])) {
+
+            $email = $_SESSION['login'];
+            $user = $this->UserModel->getUserByEmail($email);
+            if ($this->cartModel->getCartByUser($user) === null) { // si l'utilisateur n'a pas encore de panier actif, on lui en crée un
+                $creationDate = date("Y-m-d");
+                $cart = new Cart(null, $creationDate, '', $user);
+                $this->cartModel->createCart($cart);
+            }
+            if ($_SERVER['REQUEST_METHOD'] === "POST") {
+                $productID = filter_input(INPUT_POST, "productID", FILTER_SANITIZE_NUMBER_INT);
+                $quantity = filter_input(INPUT_POST, "quantity", FILTER_SANITIZE_NUMBER_INT);
+                $cart = $this->cartModel->getCartByUser($user);
+                $product = $this->productModel->getOneProduct(intval($productID));
+                if ($quantity > $product->getStock()) {
+                    $_SESSION['message'] = 'Not enough stock';
+                    header("Location: index.php?page=product&productID=$productID");
+                }
+                else {
+                    $cartItem = new CartItem($product, $cart, intval($quantity));
+                    $success = $this->cartItemModel->createCartItem($cartItem);
+                    if (!$success) {
+                        $_SESSION['message'] = 'error during process';
+                        header('Location: index.php?page=addItemInCart');
+                    }
+                    else {
+                        header("Location: index.php?page=product&productID=$productID");
+                    }
+
+                }
+            }
+        }
+
+        else {
+            header("Location: index.php?page=Login");
         }
     }
+
 
     public function myOrders() {
         $email = $_SESSION['login'];
