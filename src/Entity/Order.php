@@ -4,7 +4,6 @@
 
     namespace MyApp\Entity;
     use MyApp\Entity\User;
-    use MyApp\Invoice;
 
 
     class Order {
@@ -13,14 +12,13 @@
         private $orderDate;
         private $status;
         private User $user;
-        private Invoice $invoice;
+        private int $invoiceID;
 
-        public function __construct(?int $orderID, $orderDate, $status, User $user, Invoice $invoice) {
+        public function __construct(?int $orderID, $orderDate, $status, User $user) {
             $this->orderID = $orderID;
             $this->orderDate = $orderDate;
             $this->status = $status;
             $this->user = $user;
-            $this->invoice = $invoice;
         }
 
         public function getId(): int {
@@ -53,14 +51,6 @@
 
         public function setUser($user): void {
             $this->user = $user;
-        }
-
-        public function getInvoice(): Invoice {
-            return $this->invoice;
-        }
-
-        public function setInvoice($invoice): void {
-            $this->invoice = $invoice;
         }
 
 
