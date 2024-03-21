@@ -184,6 +184,7 @@ class DefaultController
                 $product = $item->getProduct();
                 $newStock = $product->getStock() - $item->getQuantity();
                 $product.setStock($newStock); // on modifie le stock de chaque produit après avoir passé la commande 
+                $this->productModel->updateProduct($product);
                 $this->cartItemModel->deleteCartItem($item);
             }
             $_SESSION['message'] = "commande passée";
@@ -191,7 +192,7 @@ class DefaultController
         else {
             $_SESSION['message'] = "pas assez de stock";
         }
-        
+
         echo $this->twig->render('defaultController/myOrders.html.twig', []);
 
     }
