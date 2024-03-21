@@ -164,14 +164,34 @@ class DefaultController
     public function pay() {
         $email = $_SESSION['login'];
         $user = $this->userModel->getUserByEmail($email);
-        $order = new order(null, date("Y-m-d"), '', $user);
-        $this->orderModel->createOrder($order);
-        $cart = $this->cartModel->getCartByUser($user);
+
+        $enoughStock = TRUE; // variable qui vérifie s'il y a assez de stock pour passer la commande
         $cartItems = $this->cartItemModel->getCartItemsByCart($cart);
-        foreach($cartItems as $item) {
-            $this->cartItemModel->deleteCartItem($item);
+        foreach ($cartItems as $item) {
+            $product = $item->getProduct();
+            if ($product->getStock() < $item->getQuantity()) {
+                $enoughStock = FALSE;
+            }
         }
-        $_SESSION['message'] = "commande passée";
+
+        if ($enoughStock) {
+        
+
+            $order = new order(null, date("Y-m-d"), '', $user);
+            $this->orderModel->createOrder($order);
+            $cart = $this->cartModel->getCartByUser($user);
+            foreach($cartItems as $item) {
+                $product = $item->getProduct();
+                $newStock = $product->getStock() - $item->getQuantity();
+                $product.setStock($newStock); // on modifie le stock de chaque produit après avoir passé la commande 
+                $this->cartItemModel->deleteCartItem($item);
+            }
+            $_SESSION['message'] = "commande passée";
+        }
+        else {
+            $_SESSION['message'] = "pas assez de stock";
+        }
+        
         echo $this->twig->render('defaultController/myOrders.html.twig', []);
 
     }
