@@ -14,6 +14,10 @@ use MyApp\Model\UserModel;
 use MyApp\Model\CartModel;
 use MyApp\Model\ReviewModel;
 use MyApp\Model\CartItemModel;
+use MyApp\Entity\Order;
+use MyApp\Model\OrderModel;
+use MyApp\Entity\Invoice;
+use MyApp\Model\InvoiceModel;
 use MyApp\Service\DependencyContainer;
 use Twig\Environment;
 

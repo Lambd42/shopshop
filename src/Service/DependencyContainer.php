@@ -8,6 +8,8 @@ use MyApp\Model\UserModel;
 use MyApp\Model\CartModel;
 use MyApp\Model\CartItemModel;
 use MyApp\Model\ReviewModel;
+use MyApp\Model\OrderModel;
+use MyApp\Model\InvoiceModel;
 
 class DependencyContainer
 {
@@ -55,6 +57,14 @@ class DependencyContainer
             case 'ReviewModel' :
                 $pdo = $this->get('PDO');
                 return new ReviewModel($pdo);
+
+            case 'OrderModel' :
+                $pdo = $this->get('PDO');
+                return new OrderModel($pdo);
+            
+            case 'InvoiceModel' :
+                $pdo = $this->get('PDO');
+                return new InvoiceModel($pdo);
 
             default:
                 throw new \Exception("No service found for key: " . $key);
