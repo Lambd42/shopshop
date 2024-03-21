@@ -107,11 +107,10 @@ class DefaultController
     }
 
     public function addToCartClient() {
-
         if (isset($_SESSION['login'])) {
 
             $email = $_SESSION['login'];
-            $user = $this->UserModel->getUserByEmail($email);
+            $user = $this->userModel->getUserByEmail($email);
             if ($this->cartModel->getCartByUser($user) === null) { // si l'utilisateur n'a pas encore de panier actif, on lui en crée un
                 $creationDate = date("Y-m-d");
                 $cart = new Cart(null, $creationDate, '', $user);
@@ -131,9 +130,10 @@ class DefaultController
                     $success = $this->cartItemModel->createCartItem($cartItem);
                     if (!$success) {
                         $_SESSION['message'] = 'error during process';
-                        header('Location: index.php?page=addItemInCart');
+                        header("Location: index.php?page=product&productID=$productID");
                     }
                     else {
+                        $_SESSION['message'] = 'Product added to cart';
                         header("Location: index.php?page=product&productID=$productID");
                     }
 
@@ -142,7 +142,7 @@ class DefaultController
         }
 
         else {
-            header("Location: index.php?page=Login");
+            header("Location: index.php?page=login");
         }
     }
 
