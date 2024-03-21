@@ -105,7 +105,7 @@ class DefaultController
             $user = $this->userModel->getUserByEmail($email);
             $cart = new Cart(null, $creationDate, '', $user);
             $result = $this->cartModel->createCart($cart);
-            if ($result) {
+            if ($result and in_array('Admin', $_SESSION['roles'])) {
                 header('Location: index.php?page=carts');
             }
         }
