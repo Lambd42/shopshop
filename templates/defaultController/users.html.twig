@@ -15,13 +15,15 @@
 				<br> 
 				password : <b>{{user.password}}</b>
 				<br>
-				<a href="index.php?page=updateUser&userID={{user.userID}}">
-				<button type="button" class="btn btn-dark">Modifier</button>
-				</a>
+				<div class="btn-group" role="group">
+					<a class="btn btn-dark" href="index.php?page=updateUser&userID={{user.userID}}">
+						Modifier
+					</a>
 
-				<a href="index.php?page=deleteUser&userID={{user.userID}}">
-				<button type="button" class="btn btn-dark">Supprimer</button>
-				</a>
+					<a class="btn btn-dark" href="index.php?page=deleteUser&userID={{user.userID}}">
+						Supprimer
+					</a>
+				</div>
 				<br><br>
 				{% endfor %}
 

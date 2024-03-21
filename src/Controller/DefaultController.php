@@ -6,10 +6,14 @@ use MyApp\Entity\Type;
 use MyApp\Entity\User;
 use MyApp\Entity\Product;
 use MyApp\Entity\Cart;
+use MyApp\Entity\Review;
+use MyApp\Entity\CartItem;
 use MyApp\Model\ProductModel;
 use MyApp\Model\TypeModel;
 use MyApp\Model\UserModel;
 use MyApp\Model\CartModel;
+use MyApp\Model\ReviewModel;
+use MyApp\Model\CartItemModel;
 use MyApp\Service\DependencyContainer;
 use Twig\Environment;
 
@@ -20,6 +24,7 @@ class DefaultController
     private $productModel;
     private $userModel;
     private $cartModel;
+    private $reviewModel;
 
     public function __construct(Environment $twig, DependencyContainer $dependencyContainer)
     {
@@ -28,6 +33,8 @@ class DefaultController
         $this->productModel = $dependencyContainer->get('ProductModel');
         $this->userModel = $dependencyContainer->get('UserModel');
         $this->cartModel = $dependencyContainer->get('CartModel');
+        $this->reviewModel = $dependencyContainer->get('ReviewModel');
+        $this->cartItemModel = $dependencyContainer->get('CartItemModel');
     }
 
     public function home()
@@ -200,6 +207,73 @@ class DefaultController
         $product = $this->productModel->getOneProduct(intVal($id));
         echo $this->twig->render('defaultController/updateProduct.html.twig', ['product' => $product]);
         
+    }
+
+    public function product() {
+        $productID = filter_input(INPUT_GET, "productID", FILTER_SANITIZE_NUMBER_INT);
+        $product = $this->productModel->getOneProduct(intval($productID));
+        $reviews = $this->reviewModel->getAllReviewsByProduct($product);
+        echo $this->twig->render('defaultController/product.html.twig', ['product' => $product, 'reviews' => $reviews]);
+    }
+
+    public function createReview() {
+        if (!isset($_SESSION['login'])) {
+            header('Location: index.php?page=login');
+            exit;
+        }
+        elseif ($_SERVER['REQUEST_METHOD'] === "POST") {
+            $productID = filter_input(INPUT_POST, "productID", FILTER_SANITIZE_NUMBER_INT);
+            $text = filter_input(INPUT_POST, "text", FILTER_SANITIZE_STRING);
+            $note = filter_input(INPUT_POST, "note", FILTER_SANITIZE_NUMBER_INT);
+            $product = $this->productModel->getOneProduct(intval($productID));
+            $user = $this->userModel->getUserByEmail($_SESSION['login']);
+            $review = new Review(null, $product, $user, intval($note), $text);
+            $success = $this->reviewModel->createReview($review);
+            if ($success) {
+                header("Location: index.php?page=product&productID=$productID");
+                exit;
+            }
+
+        }
+        else {
+            $productID = filter_input(INPUT_GET, "productID", FILTER_SANITIZE_NUMBER_INT);
+            $product = $this->productModel->getOneProduct(intval($productID));
+        }
+        echo $this->twig->render('defaultController/createReview.html.twig', ['product' => $product]);
+
+    }
+
+    public function addItemInCart() {
+        if ($_SERVER['REQUEST_METHOD'] === "POST") {
+            $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+            $productID = filter_input(INPUT_POST, "productID", FILTER_SANITIZE_NUMBER_INT);
+            $quantity = filter_input(INPUT_POST, "quantity", FILTER_SANITIZE_NUMBER_INT);
+            $user = $this->userModel->getUserByEmail($email);
+            $cart = $this->cartModel->getCartByUser($user);
+            $product = $this->productModel->getOneProduct(intval($productID));
+            if ($quantity > $product->getStock()) {
+                $_SESSION['message'] = 'Not enough stock';
+                header('Location: index.php?page=addItemInCart');
+            }
+            else {
+                $cartItem = new CartItem($product, $cart, intval($quantity));
+                $success = $this->cartItemModel->createCartItem($cartItem);
+                if (!$success) {
+                    $_SESSION['message'] = 'error during process';
+                    header('Location: index.php?page=addItemInCart');
+                }
+                else {
+                    $_SESSION['message'] = 'success';
+                    header('Location: index.php?page=addItemInCart');
+                }
+
+            }
+            
+
+        }
+        $products = $this->productModel->getAllProducts();
+        $users = $this->userModel->getAllUsers();
+        echo $this->twig->render('defaultController/addItemInCart.html.twig', ['products' => $products, 'users' => $users]);
     }
 
     public function register() {

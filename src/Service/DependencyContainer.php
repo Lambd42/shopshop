@@ -7,6 +7,7 @@ use MyApp\Model\ProductModel;
 use MyApp\Model\UserModel;
 use MyApp\Model\CartModel;
 use MyApp\Model\CartItemModel;
+use MyApp\Model\ReviewModel;
 
 class DependencyContainer
 {
@@ -50,6 +51,10 @@ class DependencyContainer
             case 'CartItemModel' :
                 $pdo = $this->get('PDO');
                 return new CartItemModel($pdo);
+
+            case 'ReviewModel' :
+                $pdo = $this->get('PDO');
+                return new ReviewModel($pdo);
 
             default:
                 throw new \Exception("No service found for key: " . $key);

@@ -57,6 +57,28 @@
             $stmt->bindValue(":cartID", $cart->getId());
             return $stmt->execute();
         }
+
+        public function updateCatrt(Cart $cart): ?bool {
+            $sql = "UPDATE Cart SET status = :status, userID = :userId;";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue(":status", $cart->getStatus());
+            $stmt->bindValue(":userId", $cart->getUser()->getUserId());
+            return $stmt->execute();
+        }
+
+        public function getCartByUser($user): ?Cart {
+            $userID = $user->getUserId();
+            $sql = "SELECT * FROM Cart INNER JOIN User ON Cart.userID = User.userID WHERE User.userID = :userID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue(":userID", $userID);
+            $stmt->execute();
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            if (!$row) {
+                return null;
+            }
+            $user = new User($row['userID'],$row['email'],$row['firstName'],$row['lastName'],$row['password'],json_decode($row['roles']));
+            return new Cart($row['cartID'], $row['creationDate'], $row['status'], $user);
+        }
     }
 
 

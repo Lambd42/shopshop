@@ -13,7 +13,7 @@
 
             <div class="mb-3">
                 <label for="user" class="form-label">Cart owner :</label>
-                <select type="text" class="form-select" id="user" name="user" required>
+                <select type="text" class="form-select" id="user" name="email" required>
                 <option selected value="">-- select an email --</option>
                 {% for user in users %}
                     <option value="{{user.email}}">
@@ -25,14 +25,19 @@
 
             <div class="mb-3">
                 <label for="item" class="form-label">Item :</label>
-                <select type="text" class="form-select" id="item" name="item" required>
+                <select type="text" class="form-select" id="item" name="productID" required>
                 <option selected value="">-- select an item --</option>
-                {% for item in items %}
-                    <option value="{{item.id}}">
-                        {{item.name}}
+                {% for product in products %}
+                    <option value="{{product.id}}">
+                        {{product.name}}{{product.id}}
                     </option>
                 {% endfor %}
                 </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="quantity" class="form-label">Quantity :</label>
+                <input class="form-control" type="number" name="quantity" id="quantity" value=1 required></input>
             </div>
 
 

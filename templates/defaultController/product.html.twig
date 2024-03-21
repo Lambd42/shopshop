@@ -1,0 +1,59 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    {{ parent() }} 
+    {{product.name}} 
+{% endblock %}
+
+
+{% block content %}
+    <div class="container-fluid">
+    <div class="row justify-content-center"> <div class="col-12 col-md-10">
+        <h1 class="text-center">{{product.name}}</h1> 
+        <h2>{{product.name}}</h2>
+        {{product.type.label}}
+        <br>
+        {{product.price}}€
+        <br>
+        {{product.description | raw}}
+        <br><br>
+        <a class="btn btn-dark" href="index.php?page=createReview&productID={{product.id}}">add review</a>
+
+    </div>
+    </div>
+    <hr>
+
+    <div>
+        <h2> reviews </h2>
+        <br>
+
+        {% for review in reviews %}
+            <div style="border: 1px solid white">
+            <div>{{review.user.firstName}} {{review.user.lastName}} | 
+            {% if review.note == 5 %}
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            <i class="bi bi-star-fill"></i>
+            {% else %}
+            {% for i in 1 .. review.note %}
+            <i class="bi bi-star-fill"></i>
+            {% endfor %}
+            {% for j in 1 .. (5 - review.note) %}
+            <i class="bi bi-star"></i>
+            {% endfor %}
+            {% endif %}
+            </div>
+            <br>
+            "{{review.text}}"
+            
+            <br><br>
+            </div>
+            
+        {% endfor %}
+    </div>
+
+
+
+{% endblock %}

@@ -35,13 +35,19 @@
 							{% if product.stock < 3 %} red
 							{% else %} white
 							{% endif %}
-							; border-radius:5px; margin: 5px;"
-						>
+							; border-radius:5px; margin: 10px; box-shadow: 0px 0px 5px 1px 
+							{% if product.stock < 3 %} red
+							{% else %} white
+							{% endif %}
+							;">
 							<h3>{{product.name}}</h3> 
 							<i>{{product.type.label}}</i>
 							<br>
 							{{product.price}}€
-							<br> {{product.description|raw}}
+							<br><br>
+							<a class="btn btn-dark" href="index.php?page=product&productID={{product.id}}">see more</a>	
+
+
 							<br><br>
 						</div>
 					{% endfor %}

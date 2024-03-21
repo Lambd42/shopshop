@@ -14,14 +14,14 @@
         private int $quantity;
         private float $unitPrice;
 
-        public function __contruct(Product $product, Cart $cart, int $quantity, ?float $unitPrice) {
+        public function __construct(Product $product, Cart $cart, int $quantity) {
             $this->product = $product;
             $this->cart = $cart;
             $this->quantity = $quantity;
             $this->unitPrice = $this->product->getPrice();
         }
 
-        public function getProduct(): ?Product {
+        public function getProduct(): Product {
             return $this->product;
         }
 
@@ -29,7 +29,7 @@
             $this->product = $product;
         }
 
-        public function getCart(): ?Cart {
+        public function getCart(): Cart {
             return $this->cart;
         }
 
@@ -37,7 +37,7 @@
             $this->cart = $cart;
         }
 
-        public function getQuantity(): ?int {
+        public function getQuantity(): int {
             return $this->quantity;
         }
 
@@ -45,7 +45,7 @@
             $this->quantity = $quantity;
         }
 
-        public function getUnitPrice(): ?float {
+        public function getUnitPrice(): float {
             return $this->unitPrice;
         }
 

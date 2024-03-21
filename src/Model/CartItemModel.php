@@ -4,7 +4,7 @@
 
     namespace MyApp\Model;
 
-    use MyApp\Entity\cartItem;
+    use MyApp\Entity\CartItem;
     use MyApp\Entity\Product;
     use MyApp\Entity\Cart;
     use MyApp\Entity\User;
@@ -18,7 +18,7 @@
             $this->db = $db;
         }
 
-        public function getAllCartItems(): array {
+        public function getAllCartItems(): array { 
             $sql = "SELECT * FROM Contenir INNER JOIN Product ON Contenir.productID = Product.productID INNER JOIN Cart ON Contenir.cartID = Cart.cartID INNER JOIN User ON Cart.userID = User.userID INNER JOIN Type ON Product.typeID = Type.typeID;";
             $stmt = $this->db->query($sql);
             $cartItems = [];
@@ -28,11 +28,10 @@
                 $cart = new Cart($row['Cart.cartID'], $row['creationDate'], $row['status'], $user);
                 $type = new Type($row['Type.typeId'], $row['label']);
                 $product = new Product($row['Product.productId'], $row['name'], $row['description'], floatVal($row['price']), $type, $row['image']); 
-                $cartItems[] = new CartItem($product, $cart, $row['quantity'], $row['unitPrice']);
+                $cartItems[] = new CartItem($product, $cart, $row['quantity']);
             }
 
-            return $allContenir;
-
+            return $cartItems;
         }
 
         public function getOneCartItem(int $productId, int $cartId): ?Product {
@@ -48,7 +47,17 @@
             $cart = new Cart($row['Cart.cartID'], $row['creationDate'], $row['status'], $user);
             $type = new Type($row['Type.typeId'], $row['label']);
             $product = new Product($row['Product.productId'], $row['name'], $row['description'], floatVal($row['price']), $type, $row['image']);
-            $cartItem = new CartItem($product, $cart, $row['quantity'], $row['unitPrice']);
+            $cartItem = new CartItem($product, $cart, $row['quantity']);
+            return $cartItem;
+        }
 
+        public function createCartItem(CartItem $cartItem): ?bool {
+            $sql = "INSERT INTO Contenir (productID, cartID, quantity, unitPrice) VALUES (:productID, :cartID, :quantity, :unitPrice);";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindValue(":productID", $cartItem->getProduct()->getId());
+            $stmt->bindValue(":cartID", $cartItem->getCart()->getId());
+            $stmt->bindValue(":quantity", $cartItem->getQuantity());
+            $stmt->bindValue(":unitPrice", $cartItem->getUnitPrice());
+            return $stmt->execute();
         }
     }
