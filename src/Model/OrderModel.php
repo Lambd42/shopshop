@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace MyApp\Model;
 
 use MyApp\Entity\Order;
+use MyApp\Entity\User;
 use PDO;
 
 class OrderModel {
@@ -44,14 +45,14 @@ class OrderModel {
     }
 
     public function getOrdersByUser(User $user): array {
-        $sql = "SELECT Order.orderID, orderDate, status, User.userID, firstName, lastName, email, address, postalCode, city, phone, password, roles FROM Order INNER JOIN User ON Order.userID = User.userID WHERE Order.userID = :userID;";
+        $sql = "SELECT Order.orderID, orderDate, status, User.userID as UserId, firstName, lastName, email, address, postalCode, city, phone, password, roles FROM `Order` INNER JOIN User ON Order.userID = User.userID WHERE Order.userID = :userID;";
         $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(":userID", $user.getUserId());
+        $stmt->bindValue(":userID", $user->getUserId());
         $stmt->execute();
         $orders = [];
 
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $user = new User($row['User.userID'],$row['email'],$row['firstName'],$row['lastName'],$row['password'],json_decode($row['roles']));
+            $user = new User($row['UserId'],$row['email'],$row['firstName'],$row['lastName'],$row['password'],json_decode($row['roles']));
             $orders[] = new Order($row[Order.orderID], $row[orderDate], $row[status], $user);
         }
 
@@ -67,3 +68,5 @@ class OrderModel {
         return $stmt->execute();
     }
 }
+
+?>

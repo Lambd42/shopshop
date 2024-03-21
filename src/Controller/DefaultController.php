@@ -155,7 +155,7 @@ class DefaultController
 
     public function myOrders() {
         $email = $_SESSION['login'];
-        $user = $this->UserModel->getUserByEmail($email);
+        $user = $this->userModel->getUserByEmail($email);
         $orders = $this->orderModel->getOrdersByUser($user);
         echo $this->twig->render('defaultController/myOrders.html.twig', ["orders" => $orders]);
         
