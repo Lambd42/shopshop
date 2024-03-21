@@ -9,7 +9,7 @@
 
     class Order {
 
-        private $orderId;
+        private ?int $orderId = null;
         private $orderDate;
         private $status;
         private User $user;
