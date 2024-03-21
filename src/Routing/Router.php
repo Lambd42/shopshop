@@ -50,7 +50,7 @@ class Router
             'createReview' => [DefaultController::class, 'createReview', ['client']],
             'addItemInCart' => [DefaultController::class, 'addItemInCart', ['admin']],
             'addToCartClient' => [DefaultController::class, 'addToCartClient', []],
-            'myCart' => [DefaultController::class, 'myCart', ['user']],
+            'myCart' => [DefaultController::class, 'myCart', []],
             'pay' => [DefaultController::class, 'pay', ['client']],
             'myOrders' => [DefaultController::class, 'myOrders', ['client']]
             

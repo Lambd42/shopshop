@@ -99,10 +99,13 @@ class DefaultController
     }
 
     public function myCart() {
+        if (!isset($_SESSION['login'])) {
+            header("Location: index.php?page=login");
+        }
         $email = $_SESSION['login'];
         $user = $this->userModel->getUserByEmail($email);
         $cart = $this->cartModel->getCartByUser($user);
-        $cartItems = $this->CartItemModel->getCartitemsByCart($cart);
+        $cartItems = $this->cartItemModel->getCartItemsByCart($cart);
         echo $this->twig->render('defaultController/myCart.html.twig', ['items' => $cartItems]);
     }
 
