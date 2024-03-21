@@ -28,6 +28,8 @@ class DefaultController
     private $productModel;
     private $userModel;
     private $cartModel;
+    private $orderModel;
+    private $cartItemModel;
     private $reviewModel;
 
     public function __construct(Environment $twig, DependencyContainer $dependencyContainer)
@@ -39,6 +41,7 @@ class DefaultController
         $this->cartModel = $dependencyContainer->get('CartModel');
         $this->reviewModel = $dependencyContainer->get('ReviewModel');
         $this->cartItemModel = $dependencyContainer->get('CartItemModel');
+        $this->orderModel = $dependencyContainer->get('OrderModel');
     }
 
     public function home()
@@ -160,7 +163,7 @@ class DefaultController
 
     public function pay() {
         $email = $_SESSION['login'];
-        $user = $this->UserModel->getUserByEmail($email);
+        $user = $this->userModel->getUserByEmail($email);
         $order = new order(null, date("Y-m-d"), '', $user);
         $this->orderModel->createOrder($order);
         $cart = $this->cartModel->getCartByUser($user);

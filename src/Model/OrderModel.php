@@ -59,12 +59,11 @@ class OrderModel {
     }
 
     public function createOrder(Order $order) {
-        $sql = "INSERT INTO Order (orderID, orderDate, status, userID) VALUES (:orderID, :orderDate, :status, :userID);";
+        $sql = "INSERT INTO `Order` (orderDate, status, userID) VALUES (:orderDate, :status, :userID);";
         $stmt = $this->db->prepare($sql);
-        $stmt->bindValue(":orderID", $order->getId());
         $stmt->bindValue(":orderDate", $order->getOrderDate());
         $stmt->bindValue(":status", $order->getStatus());
-        $stmt->bindValue(":userID", $order->getUser->getUserId());
+        $stmt->bindValue(":userID", intval($order->getUser()->getUserId()));
         return $stmt->execute();
     }
 }

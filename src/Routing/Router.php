@@ -47,12 +47,12 @@ class Router
             'logout' => [DefaultController::class, 'logout', []],
             'productsByType' => [DefaultController::class, 'productsByType', []],
             'product' => [DefaultController::class, 'product', []],
-            'createReview' => [DefaultController::class, 'createReview', ['client']],
-            'addItemInCart' => [DefaultController::class, 'addItemInCart', ['admin']],
+            'createReview' => [DefaultController::class, 'createReview', ['User']],
+            'addItemInCart' => [DefaultController::class, 'addItemInCart', ['Admin']],
             'addToCartClient' => [DefaultController::class, 'addToCartClient', []],
-            'myCart' => [DefaultController::class, 'myCart', []],
-            'pay' => [DefaultController::class, 'pay', ['client']],
-            'myOrders' => [DefaultController::class, 'myOrders', ['client']]
+            'myCart' => [DefaultController::class, 'myCart', ['User']],
+            'pay' => [DefaultController::class, 'pay', ['User']],
+            'myOrders' => [DefaultController::class, 'myOrders', ['User']]
             
         ];
         $this->defaultPage = 'home';

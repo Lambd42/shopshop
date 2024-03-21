@@ -20,7 +20,7 @@
             $this->user = $user;
         }
 
-        public function getId(): int {
+        public function getId(): ?int {
             return $this->orderID;
         }
 
@@ -28,11 +28,11 @@
             $this->orderID = $id;
         }
 
-        public function getDate(): string {
+        public function getOrderDate(): string {
             return $this->orderDate;
         }
 
-        public function setDate($date): void {
+        public function setOrderDate($date): void {
             $this->orderDate = $date;
         }
 
